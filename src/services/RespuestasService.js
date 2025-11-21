@@ -1,4 +1,4 @@
-const API_URL = 'http://10.112.222.224:3000/api/respuestas';
+const API_URL = 'https://backenddiseno.onrender.com/api/respuestas';
 
 // 🔹 Crear una nueva respuesta
 export const crearRespuesta = async (respuestaData) => {

@@ -8,6 +8,16 @@ export const styles = StyleSheet.create({
     textDark: '#1F1F39',
     textLight: '#A0A3B1',
     white: '#FFFFFF',
+    background: '#FFFFFF', // 👈 fondo global blanco
+  },
+
+  // 🔹 Contenedor genérico de pantalla (úsalo en Dashboard, AdminPanel, etc.)
+  screenContainer: {
+    flex: 1,
+    backgroundColor: '#FFFFFF', // 👈 aquí fuerzas blanco
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 24,
   },
 
   // Contenedor del formulario (solo para centrar el recuadro)
@@ -17,11 +27,11 @@ export const styles = StyleSheet.create({
     marginTop: 24, // espacio entre título y tarjeta
   },
 
-  // 🟦 Tarjeta grande del login (RECUADRO)
+  // 🟦 Tarjeta grande del login / registro
   authForm: {
     backgroundColor: '#FFFFFF',
     width: '100%',          // ocupa todo el ancho disponible del padre
-    maxWidth: 420,          // 🔥 ancho ideal tipo diseño
+    maxWidth: 420,          // ancho ideal tipo diseño
     paddingHorizontal: 32,  // espacio interno
     paddingVertical: 40,
     borderRadius: 28,
@@ -58,7 +68,7 @@ export const styles = StyleSheet.create({
     marginBottom: 15,
   },
 
-  // Título dentro del recuadro ("Iniciar sesión")
+  // Título dentro del recuadro
   title: {
     fontSize: 24,
     fontWeight: '800',

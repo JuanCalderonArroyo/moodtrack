@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TextInput, TouchableOpacity, Alert, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 export default function HomeScreen({ user }) {
@@ -8,76 +8,78 @@ export default function HomeScreen({ user }) {
 
   const hacerForm = () => {
     try {
-      // En lugar de actualizar datos, ahora navegamos
-      navigation.navigate('Formulario'); // Esto te lleva a FormularioScreen
+      navigation.navigate('Formulario');
     } catch (err) {
       Alert.alert('Error', err.message);
     }
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Hola, {user?.nombre || 'Usuario'} 👋</Text>
-      <Text style={{ textAlign: 'center', color: '#555' }}>
+    <View style={localStyles.container}>
+
+      {/* Saludo */}
+      <Text style={localStyles.title}>
+        Hola, {user?.nombre || 'Usuario'} 
+      </Text>
+
+      {/* Subtítulo */}
+      <Text style={localStyles.subtitle}>
         Bienvenido a tu panel. Aquí podrás seguir tu progreso emocional.
-      </Text>      
-      <TouchableOpacity style={styles.FormButton} onPress={hacerForm}>
-        <Text style={styles.buttonText}>Realizar formulario</Text>
+      </Text>
+
+      {/* Botón */}
+      <TouchableOpacity style={localStyles.button} onPress={hacerForm}>
+        <Text style={localStyles.buttonText}>Realizar formulario</Text>
       </TouchableOpacity>
+
     </View>
-    
   );
 }
 
-const styles = StyleSheet.create({
+const localStyles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FAF3DD',
-    padding: 20,
+    backgroundColor: '#FFFFFF', // 👈 FONDO BLANCO FORZADO
     justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 24,
   },
+
   title: {
-    fontSize: 22,
-    fontWeight: '700',
-    marginBottom: 20,
+    fontSize: 28,
+    fontWeight: '800',
+    color: '#1F1F39',
     textAlign: 'center',
+    marginBottom: 10,
   },
-  input: {
-    backgroundColor: '#FFF',
-    borderRadius: 10,
-    padding: 12,
-    marginVertical: 8,
-    borderWidth: 1,
-    borderColor: '#ddd',
+
+  subtitle: {
+    fontSize: 15,
+    color: '#6B6E8A',
+    textAlign: 'center',
+    marginBottom: 30,
+    lineHeight: 20,
   },
-  pickerContainer: {
-    backgroundColor: '#FFF',
-    borderRadius: 10,
-    marginVertical: 8,
-    borderWidth: 1,
-    borderColor: '#ddd',
+
+  button: {
+    backgroundColor: '#407BFF',
+    paddingVertical: 16,
+    width: '80%',
+    borderRadius: 12,
+    alignItems: 'center',
+
+    // sombra bonita estilo iOS
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.15,
+    shadowRadius: 10,
+    elevation: 4,
   },
-  saveButton: {
-    backgroundColor: '#5E8C61',
-    padding: 14,
-    borderRadius: 10,
-    marginTop: 10,
-  },
-  deleteButton: {
-    backgroundColor: 'red',
-    padding: 14,
-    borderRadius: 10,
-    marginTop: 10,
-  },
-  FormButton: {
-    backgroundColor: '#2596ecff',
-    padding: 14,
-    borderRadius: 10,
-    marginTop: 10,
-  },
+
   buttonText: {
-    color: '#FFF',
+    color: '#FFFFFF',
+    fontSize: 17,
+    fontWeight: '700',
     textAlign: 'center',
-    fontWeight: 'bold',
   },
 });

@@ -1,4 +1,4 @@
-const API_URL = 'http://10.112.222.224:3000/api/resultados';
+const API_URL = 'https://backenddiseno.onrender.com/api/resultados';
 
 export const crearResultado = async (resultado) => {
   try {

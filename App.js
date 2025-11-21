@@ -1,96 +1,134 @@
-import React, { useState } from 'react';
-import { View, Text, Image, TouchableOpacity, ScrollView } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  ScrollView,
+  KeyboardAvoidingView,
+  Platform,
+} from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import LoginForm from './src/components/LoginForm';
 import RegisterForm from './src/components/RegisterForm';
 import Dashboard from './src/components/Dashboard';
+import AdminDashboard from './src/components/AdminDashboard';
 import { styles } from './src/styles/styles';
-import AdminPanel from './src/components/AdminPanel';
-import FormularioScreen from './src/components/tabs/FormularioScreen';
 
 export default function App() {
   const [user, setUser] = useState(null);
-  const [view, setView] = useState('login'); // login | register | dashboard
+  const [view, setView] = useState('login'); // login | register
 
+  // Cargar usuario guardado
+  useEffect(() => {
+    const loadUser = async () => {
+      const storedUser = await AsyncStorage.getItem('user');
+      if (storedUser) {
+        setUser(JSON.parse(storedUser));
+      }
+    };
+    loadUser();
+  }, []);
+
+  // Si ya está logueado
   if (user) {
-    // Si es el admin, mostrar interfaz diferente
-if (user.rol === 'admin') {
-  return (
-    <AdminPanel
-      user={user}
-      onLogout={async () => {
-        await AsyncStorage.removeItem('user');
-        setUser(null);
-      }}
-    />
-  );
-}
+    if (user.rol === 'admin') {
+      return (
+        <AdminDashboard
+          user={user}
+          onLogout={async () => {
+            await AsyncStorage.removeItem('user');
+            setUser(null);
+          }}
+        />
+      );
+    }
 
-    
-
-    // Si no es admin, mostrar el dashboard normal
     return (
       <Dashboard
         user={user}
-        onLogout={() => setUser(null)}
+        onLogout={async () => {
+          await AsyncStorage.removeItem('user');
+          setUser(null);
+        }}
         onUserUpdate={setUser}
       />
     );
   }
 
+  // Pantallas de Login / Registro
   return (
-    <ScrollView
-      contentContainerStyle={{
-        flexGrow: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: styles.colors.beige,
-        paddingVertical: 50,
-      }}
+    <KeyboardAvoidingView
+      style={{ flex: 1, backgroundColor: '#FFFFFF' }}
+      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
     >
-      {view === 'login' ? (
-        <View style={{ alignItems: 'center', width: '100%' }}>
-          <Image
-            source={require('./src/assets/calm.png')}
-            style={[styles.illustration, { width: 180, height: 180, marginBottom: 10 }]}
-          />
-          <Text style={styles.title}>Bienvenido a MoodTrack</Text>
-          <Text style={{ color: styles.colors.text, marginBottom: 20 }}>
-            Inicia sesión para continuar tu viaje emocional
-          </Text>
+      <ScrollView
+        contentContainerStyle={{
+          flexGrow: 1,
+          justifyContent: 'center',   // 🔥 CENTRADO VERTICAL
+          alignItems: 'center',       // 🔥 CENTRADO HORIZONTAL
+          paddingVertical: 40,
+          paddingHorizontal: 16,
+          backgroundColor: '#FFFFFF',
+        }}
+        keyboardShouldPersistTaps="handled"
+      >
+        {view === 'login' ? (
+          <View style={{ alignItems: 'center', width: '100%' }}>
+            {/* TITULOS SUPERIORES */}
 
-          <LoginForm onLoginSuccess={setUser} />
+            {/* FORMULARIO LOGIN */}
+            <LoginForm onLoginSuccess={setUser} />
 
-          <Text style={{ color: styles.colors.text, marginTop: 15 }}>
-            ¿No tienes cuenta?
-          </Text>
-          <TouchableOpacity onPress={() => setView('register')}>
-            <Text style={{ color: styles.colors.blue, fontWeight: 'bold', marginTop: 5 }}>
-              Regístrate
+            {/* TEXTO REGISTRO */}
+            <Text style={{ color: '#555', marginTop: 25 }}>
+              ¿No tienes cuenta?
             </Text>
-          </TouchableOpacity>
 
-          <Text style={styles.footer}>
-            MoodTrack © 2025 – Your emotions, safely tracked.
-          </Text>
-        </View>
-      ) : (
-        <View style={{ alignItems: 'center', width: '100%' }}>
-          <RegisterForm onRegisterSuccess={() => setView('login')} />
+            <TouchableOpacity onPress={() => setView('register')}>
+              <Text
+                style={{
+                  color: '#407BFF',
+                  fontWeight: 'bold',
+                  marginTop: 6,
+                }}
+              >
+                Regístrate
+              </Text>
+            </TouchableOpacity>
 
-          <Text style={{ color: styles.colors.text, marginTop: 15 }}>
-            ¿Ya tienes cuenta?
-          </Text>
-          <TouchableOpacity onPress={() => setView('login')}>
-            <Text style={{ color: styles.colors.blue, fontWeight: 'bold', marginTop: 5 }}>
-              Inicia sesión
+            {/* FOOTER */}
+            <Text style={[styles.footer, { marginTop: 20 }]}>
+              MoodTrack © 2025 – Your emotions, safely tracked.
             </Text>
-          </TouchableOpacity>
+          </View>
+        ) : (
+          <View style={{ alignItems: 'center', width: '100%' }}>
 
-          <Text style={styles.footer}>
-            MoodTrack © 2025 – Your emotions, safely tracked.
-          </Text>
-        </View>
-      )}
-    </ScrollView>
+            <RegisterForm onRegisterSuccess={() => setView('login')} />
+
+            <Text style={{ color: '#555', marginTop: 20 }}>
+              ¿Ya tienes cuenta?
+            </Text>
+
+            <TouchableOpacity onPress={() => setView('login')}>
+              <Text
+                style={{
+                  color: '#407BFF',
+                  fontWeight: 'bold',
+                  marginTop: 6,
+                }}
+              >
+                Inicia sesión
+              </Text>
+            </TouchableOpacity>
+
+            <Text style={[styles.footer, { marginTop: 20 }]}>
+              MoodTrack © 2025 – Your emotions, safely tracked.
+            </Text>
+          </View>
+        )}
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 }

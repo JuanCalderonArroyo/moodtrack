@@ -1,5 +1,5 @@
 // src/services/authService.js
-const API_URL = 'http://10.112.222.224:3000/api/usuarios'; // Ajusta según tu server
+const API_URL = 'https://backenddiseno.onrender.com/api/usuarios'; // Ajusta según tu server
 import AsyncStorage from '@react-native-async-storage/async-storage';
 // Registrar usuario
 export async function registerUser({ nombre, email, password, edad, genero }) {

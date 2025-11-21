@@ -2,7 +2,7 @@ export const colors = {
   mint: '#CDEAC0',
   lavender: '#E0BBE4',
   blue: '#A8DADC',
-  beige: '#FAF3DD',
+  beige: '#ffffffff',
   white: '#FFFFFF',
   text: '#4A4A4A',
 };
